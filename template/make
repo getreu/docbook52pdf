@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./docbook52pdf "./source/main.md" "./build/pdf/main.pdf"
