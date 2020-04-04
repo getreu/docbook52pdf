@@ -87,8 +87,8 @@ render () {
            "$XmlFile" && \
         fop -fo "$FoFile" -pdf "$PdfFile"
         rm  "$XmlFile" && \
-        rm  -r "images" && \
-        rm  "$FoFile"  
+        rm  "$FoFile" && \ 
+        rm  -r "images" 
 }
 
 
