@@ -1,3 +1,4 @@
 #!/bin/sh
 
-./docbook52pdf "./source/tp-note--manual.md" "./build/pdf/tp-note--manual.pdf"
+./docbook52pdf "./source/docbook52pdf-example.md" "./build/pdf/docbook52pdf-example.pdf"
+./docbook52html "./source/docbook52pdf-example.md" "./build/html/docbook52pdf-example.html"

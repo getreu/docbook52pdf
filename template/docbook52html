@@ -1,9 +1,7 @@
 #!/bin/bash
 # Author: Jens Getreu
 
-# apt install pandoc docbook5-xml docbook-xsl-ns xsltproc fop xmlto libxml2-utils xmlstarlet
-
-
+# apt install pandoc docbook-xsl-ns xsltproc
 render () {
     ### parse args
 
@@ -27,13 +25,10 @@ render () {
 
 
     ### Prepare
-    XmlFile="$OutBase.xml"
-    XmlPath="$OutDir/$XmlFile"
-    FoFile="$OutBase.fo"
-    FoPath="$OutDir/$FoFile"
-    PdfFile="$OutBase.pdf"
-    PdfPath="$OutDir/$PdfFile"
-    XslPath="$(realpath $InDir/docbook-xsl/fo-pdf.xsl)"
+
+    XmlPath="$OutDir/$OutBase.xml"
+    HtmlPath="$OutDir/$OutBase.html"
+    TemplatePath="$OutDir/template.db"
     mkdir -p "$OutDir"
 
 
@@ -51,8 +46,8 @@ render () {
         fi
     fi
 
-    # Workaround bug 
-    # [Docbook5 Writer: produces invalid output when author is given · 
+    # Workaround bug
+    # [Docbook5 Writer: produces invalid output when author is given ·
     # Issue #6244 · jgm/pandoc](https://github.com/jgm/pandoc/issues/6244)
 
     if grep -q '<author>' "$XmlPath" &&  ! grep -q '<personname>' "$XmlPath"
@@ -75,37 +70,37 @@ render () {
 
 
 
-    ### Generate .pdf 
+    ### Generate .html
     # xsltproc also take parameters e.g. --stringparam use.extensions 0\
-
+    # this is only needed for html output
     cp -r  "$InDir/images/" "$OutDir"
+    cp "$InDir/docutils_basic.css" "$OutDir"
 
-    cd "$OutDir"
+    ### Generate HTML
 
-    xsltproc --output "$FoFile" \
-           "$XslPath"\
-           "$XmlFile" && \
-        fop -fo "$FoFile" -pdf "$PdfFile"
-        rm  "$XmlFile" && \
-        rm  -r "images" && \
-        rm  "$FoFile"  
+    # Xsltproc also take parameters e.g. --stringparam use.extensions 0\
+    #  Schema 1.79.1 does not render figure references correctly:
+    #     /usr/share/xml/docbook/stylesheet/docbook-xsl-ns/html/docbook.xsl\
+    #  Use snapshot with UTF-8 in docbook.xsl instead
+    xsltproc --stringparam html.stylesheet docutils_basic.css --output "$HtmlPath" \
+	--stringparam  section.autolabel 1 \
+        /usr/share/xml/docbook/stylesheet/docbook-xsl-ns/xhtml/docbook.xsl \
+           "$XmlPath" && \
+    rm  "$XmlPath"
 }
 
 
 
 ### Main
-# usage: 
+# usage:
 # render FILE [FILE]
-# render report.md ./rendition/report.pdf
+# render report.md ./rendition/report.html
 
 if [[ -n "${2/[ ]*\n/}" ]] ; then
         OutPath="$2"
 else
-        OutPath="${1%.*}.pdf" # $2 is empty
+        OutPath="${1%.*}.html" # $2 is empty
 fi
-render "$1" "$OutPath" 
-
-
-
+render "$1" "$OutPath"
 
 
