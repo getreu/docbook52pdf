@@ -39,7 +39,7 @@ rendering-tool-chain.
 
 2. Download the template:
 
-       git clone git@github.com:getreu/docbook52pdf.git
+       git clone git@gitlab.com:getreu/docbook52pdf.git
 
 3. Copy and rename the template directory:
 

@@ -15,8 +15,8 @@ _Tp-Note_ helps you to quickly get started writing notes with its powerful
 template system. As _Tp-Note_ takes care that the note's filename is always
 synchronized with its document title, you will find back your notes easily.
 
-The project is hosted on Github:
-[getreu/tp-note](https://github.com/getreu/tp-note). The project's webpage is on
+The project is hosted on Gitlab:
+[getreu/tp-note](https://gitlab.com/getreu/tp-note). The project's webpage is on
 [http://blog.getreu.net](http://blog.getreu.net/projects/tp-note/).
 
 ## Fast start note-taking (when the lecture starts)
