@@ -1,4 +1,4 @@
 #!/bin/sh
 
-./docbook52pdf "./source/main.md" "./build/pdf/main.pdf"
-./docbook52html "./source/main.md" "./build/html/main.html"
+./docbook52pdf "./source/README.md" "./build/pdf/README.pdf"
+./docbook52html "./source/README.md" "./build/html/README.html"
