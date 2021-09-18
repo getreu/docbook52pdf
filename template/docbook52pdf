@@ -3,6 +3,7 @@
 
 # apt install pandoc docbook5-xml docbook-xsl-ns xsltproc fop xmlto libxml2-utils xmlstarlet
 
+#set -x
 
 render () {
     ### parse args
@@ -51,8 +52,8 @@ render () {
         fi
     fi
 
-    # Workaround bug 
-    # [Docbook5 Writer: produces invalid output when author is given · 
+    # Workaround bug
+    # [Docbook5 Writer: produces invalid output when author is given ·
     # Issue #6244 · jgm/pandoc](https://github.com/jgm/pandoc/issues/6244)
 
     if grep -q '<author>' "$XmlPath" &&  ! grep -q '<personname>' "$XmlPath"
@@ -75,7 +76,7 @@ render () {
 
 
 
-    ### Generate .pdf 
+    ### Generate .pdf
     # xsltproc also take parameters e.g. --stringparam use.extensions 0\
 
     cp -r  "$InDir/images/" "$OutDir"
@@ -85,16 +86,18 @@ render () {
     xsltproc --output "$FoFile" \
            "$XslPath"\
            "$XmlFile" && \
-        fop -fo "$FoFile" -pdf "$PdfFile"
-        rm  "$XmlFile" && \
-        rm  -r "images" && \
-        rm  "$FoFile"  
+        fop -fo "$FoFile" -pdf "$PdfFile" && \
+        rm  "$FoFile" && \
+	    if [ "$OutDir" != "$OutDir" ] ; then
+        	rm  "$XmlFile" && \
+        	rm  -r "images"
+        fi
 }
 
 
 
 ### Main
-# usage: 
+# usage:
 # render FILE [FILE]
 # render report.md ./rendition/report.pdf
 
@@ -103,7 +106,7 @@ if [[ -n "${2/[ ]*\n/}" ]] ; then
 else
         OutPath="${1%.*}.pdf" # $2 is empty
 fi
-render "$1" "$OutPath" 
+render "$1" "$OutPath"
 
 
 
